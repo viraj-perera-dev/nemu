@@ -1,17 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import GoldChart from '../components/GoldPrice'; 
-import FixingPrice from '../components/FixingGoldPrice';
-import SpotPrice from '../components/SpotPrice';
+import React from 'react';
 
 function HomePage() {
 
   return (
     <>
-      <GoldChart/>
-      <SpotPrice/>
       <div className='grid grid-cols-6 gap-'>
         <div className='col-start-1 col-span-7'>
-          <FixingPrice/>
+          <p className='text-center fw-semibold text-5xl text-slate-50 mt-20'>Hello world!</p>
         </div>
       </div>
     </>
