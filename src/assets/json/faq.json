@@ -1,0 +1,80 @@
+[
+    {
+      "id": 1,
+      "cat": 1,
+      "question": "Dove posso acquistare Oro da investimento?",
+      "answer": "È possibile acquistare Oro da Investimento solo attraverso un Operatore Professionale Oro (Banco Metalli) autorizzato da Banca D’Italia a seguito di una concessione fatta ad aziende che superano determinati requisiti. Careisgold ha superato tutti i requisiti (e vanta un capitale sociale superiore a tanti Banchi Metalli) ed è pertanto anch’essa nell’elenco degli Operatori autorizzati, disponibile sul sito di Banca D’Italia."
+    },
+    {
+      "id": 2,
+      "cat": 1,
+      "question": "Chi garantisce la qualità dei lingotti?",
+      "answer": "I lingotti distribuiti da Careisgold provengono esclusivamente da raffinerie con certificazione Good Delivery. Per “Good Delivery” si intende la certificazione, rilasciata dalla London Bullion Market Association (LBMA), che determina uno standard al fine di aumentare la trasparenza e la liquidabilità dell’Oro Puro Fisico in tutto il mondo. Careisgold SpA tratta solo lingotti provenienti da raffinerie inserite nella Good Delivery List, e in Italia, solo tre società l'hanno ottenuta. Secondo la normativa vigente, per Oro da investimento si intende l’Oro in forma di lingotti o placchette di peso superiore a 1 grammo e di purezza pari o superiore a 995 millesimi; le raffinerie a cui fa riferimento Careisgold producono lingotti di purezza 999,9/1.000."
+    },
+    {
+      "id": 3,
+      "cat": 2,
+      "question": "Con quali cifre si può iniziare un accumulo in oro puro fisico da investimento?",
+      "answer": "È possibile iniziare con qualsiasi cifra, purché con essa venga acquistato come minimo un grammo di Oro per ogni versamento. I clienti Careisgold hanno investito cifre dai 100 € a 1 milione di €."
+    },
+    {
+      "id": 4,
+      "cat": 2,
+      "question": "È possibile passare ad una tariffa differente da quella sottoscritta (intendendo variazioni di pezzatura e/o grammatura di arrivo e/o tipologia)?",
+      "answer": "No, è necessario sottoscrivere uno nuovo contratto."
+    },
+    {
+      "id": 5,
+      "cat": 3,
+      "question": "Cos’è la quota S.A.D.?",
+      "answer": "È l’importo di apertura deposito (ossia un “patto di fiducia”). Rappresenta la volontà di iniziare l’investimento, in quanto Careisgold si prende l’impegno di aprire un deposito per il cliente e portarlo avanti fino alla quantità prestabilita, con tutti i servizi inclusi."
+    },
+    {
+      "id": 6,
+      "cat": 3,
+      "question": "È possibile dilazionare tutta la quota S.A.D.?",
+      "answer": "La quota S.A.D. può essere versata in un’unica soluzione (alla sottoscrizione del contratto) o in due tranches: 50% alla sottoscrizione e il restante 50% entro 6 mesi, anche frazionando l’importo."
+    },
+    {
+      "id": 7,
+      "cat": 4,
+      "question": "È possibile ritirare il lingotto?",
+      "answer": "Sì. Nel prodotto PAR si può richiedere la consegna al domicilio ogni volta che viene raggiunto il lingotto corrispondente alla pezzatura scelta alla sottoscrizione del contratto. Nel prodotto AURUM si può richiedere la consegna quando si preferisce, tenendo presente che, in entrambi i casi, Careisgold riacquista solamente l’oro rimasto in deposito."
+    },
+    {
+      "id": 8,
+      "cat": 4,
+      "question": "Dove viene tenuto l’oro?",
+      "answer": "Con Careisgold, una volta uscito dalla Raffineria, l’oro viene detenuto in caveaux di massima sicurezza con copertura assicurativa al 100% del valore dell’oro. Careisgold effettua periodicamente i controlli sui lingotti in deposito. È possibile anche farsi spedire l’oro a casa (Careisgold, a tale scopo, si avvale di portavalori assicurati, non di semplici corrieri) e tenerlo in una cassetta di sicurezza, ma nella maggior parte dei casi, non sempre si sa che in caso di furto solitamente la cassetta ha un’assicurazione spot. Per assicurare correttamente l’oro ed il suo valore (che cambia nel tempo) servono assicurazioni specifiche che coprono il 100% del valore di quel giorno in caso di furto."
+    },
+    {
+      "id": 9,
+      "cat": 5,
+      "question": "Se il Cliente non ha più la possibilità di versare, cosa può succedere?",
+      "answer": "Nulla! È possibile interrompere i versamenti per due anni e poi riprendere. Qualora, trascorsi 24 mesi, non fosse ancora possibile riprendere i versamenti, si provvederà, previo contatto con il cliente per valutare la situazione, alla cessazione del contratto con relativa consegna e/o monetizzazione dell’oro acquistato sino a quel momento."
+    },
+    {
+      "id": 10,
+      "cat": 5,
+      "question": "Ci sono penali in caso di interruzione del piano?",
+      "answer": "No, nessuna penalizzazione. Chiaramente la S.A.D. residua non verrà recuperata."
+    },
+    {
+      "id": 11,
+      "cat": 6,
+      "question": "L’acquisto di oro va dichiarato? Risulta fiscalmente da qualche parte?",
+      "answer": "Careisgold emette fattura elettronica per ogni acquisto (Agenzia delle Entrate). Inoltre, per versamenti superiori a 12.500 €, Careisgold è tenuta a fare comunicazione a Banca d’Italia (in analogia alle comunicazioni di spostamenti di importi dal conto corrente). Ai fini della dichiarazione dei redditi, va dichiarata esclusivamente la plusvalenza a seguito della monetizzazione (Quadro RT della dichiarazione fiscale relativa all’anno in cui è risultata la plusvalenza). In base alla normativa vigente, sulla plusvalenza è dovuta un’imposta sostitutiva pari al 26% in caso di presenza della documentazione di acquisto; mentre, in assenza di documentazione d’acquisto, la plusvalenza viene calcolata sul totale del valore di rivendita."
+    },
+    {
+      "id": 12,
+      "cat": 7,
+      "question": "A chi è possibile rivendere l’oro?",
+      "answer": "A Careisgold se è rimasto in deposito; in alternativa, una volta ricevuto al domicilio, al libero mercato. In quest’ultimo caso, consigliamo di rivolgersi solo a professionisti del settore o a Operatori Professionali in Oro."
+    },
+    {
+      "id": 13,
+      "cat": 8,
+      "question": "Chi mi dà la garanzia che l’oro continuerà ad apprezzarsi?",
+      "answer": "Non è possibile dare una garanzia a riguardo, in quanto il prezzo dell’oro è influenzato da molteplici fattori. Considerando il trend nel corso degli anni, possiamo ipotizzare che nel lungo termine avrà un andamento positivo. In ogni caso, rimane il miglior bene di rifugio per la protezione del proprio capitale."
+    }
+  ]
