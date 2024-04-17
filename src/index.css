@@ -22,19 +22,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.background-cassaforte{
-  background-image: url('./assets/minimalSection/cassaforte.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.background-cassaforte{
-  background-image: url('./assets/minimalSection/cassaforte.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 .progress-button-light {
   position: relative;
   overflow: hidden;
@@ -480,15 +467,6 @@ figcaption p{
   }
   /* contact form */
 
-  .background-form-image {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('./assets/azienda/24aa0b78-ca57-45aa-b.jpg');
-    background-size: cover;
-    background-position: center;
-  }
   
   .t-cover__filter {
     position: absolute;

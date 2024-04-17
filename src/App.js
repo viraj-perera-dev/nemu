@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import './index.css';
 import HomePage from './pages/HomePage';
+import MenuType from './pages/MenuType';
+import SingleMenu from './pages/SingleMenu';
 
 
 function App() {
@@ -12,13 +14,8 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
-            {/* dynamic routes */}
-            {/* {posts.map(post => (
-                <Route key={post.Id} exact path={`/notizie/approfondimenti/${post.Id}/${formatToUrlFriendly(post.Metatitle)}`} element={<Approfondimenti/>} />
-            ))}
-            {posts.map(post => (
-                <Route key={post.Id} exact path={`/notizie/rassegna-stampa/${post.Id}/${formatToUrlFriendly(post.Metatitle)}`} element={<RassegnaStampa/>} />
-            ))} */}
+          <Route exact path="/menu/:menuType" element={<MenuType />} />
+          <Route exact path="/menu/:menuType/:menuId" element={<SingleMenu />} />
         </Routes>
       </Router>
     </div>
