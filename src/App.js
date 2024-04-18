@@ -5,6 +5,7 @@ import './index.css';
 import HomePage from './pages/HomePage';
 import MenuType from './pages/MenuType';
 import SingleMenu from './pages/SingleMenu';
+import MenuCategory from './pages/CategoryMenu';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route exact path="/" element={<HomePage />} />
           <Route exact path="/menu/:menuType" element={<MenuType />} />
           <Route exact path="/menu/:menuType/:menuId" element={<SingleMenu />} />
+          <Route exact path="/menu/:menuType/:menuId/:categoryId" element={<MenuCategory />} />
         </Routes>
       </Router>
     </div>
