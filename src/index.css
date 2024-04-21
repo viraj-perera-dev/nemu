@@ -479,4 +479,6 @@ figcaption p{
     z-index: 1; /* Ensure it's above the background image */
   }
   
-  
+  .bg-nemu{
+    background-color: #46b979;
+  }

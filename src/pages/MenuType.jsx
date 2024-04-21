@@ -62,14 +62,14 @@ function MenuType() {
     <div className="flex flex-col items-center justify-center h-dvh">
       {menus.map((menu) => (
         <button key={menu.menuId} onClick={() => handleMenuClick(menu.menuId)} className='w-72 md:w-96 mb-10'>
-          <div className={`border-b px-4 py-3 sm:px-6 rounded`} style={{backgroundColor:menu.menu.color, 'border':'1px solid #46b979'}}>
+          <div className={`border-b px-4 py-3 sm:px-6 rounded`} style={{backgroundColor:menu.menu.color+'e7', 'border':'1px solid #46b979'}}>
             <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
               <div className="ml-4 mt-4">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <img
-                      className={`h-12 w-12 ${menu.menu.image === '' ? '' : 'rounded-full'}`}
-                      src={menu.menu.image === '' ? IconNemu : menu.menu.image}
+                      className={`h-12 w-12 bg-cover ${menu.menu.image === '' ? '' : 'rounded'}`}
+                      src={menu.menu.image === '' ? IconNemu : 'https://www.nemuapp.it/api/download/'+menu.menu.image}
                       alt="menu"
                     />
                   </div>
