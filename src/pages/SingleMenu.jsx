@@ -23,6 +23,7 @@ function SingleMenu() {
   const [apiData, setApiData] = useState({});
   const [selectedLanguages, setSelectedLanguages] = useState('it');
   const [menuCategoriesLeng, setMenuCategoriesLeng] = useState([]);
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
 
 
@@ -33,7 +34,7 @@ function SingleMenu() {
   // if refresh or open direct on this page
   const fetchMenuData = async () => {
     try {
-      const response = await fetch(`https://www.nemuapp.it/api/owners/${menuType}/menus`);
+      const response = await fetch(`${apiEndpoint}/owners/${menuType}/menus`);
       if (!response.ok) {
         throw new Error('Failed to fetch menu data');
       }
@@ -131,7 +132,7 @@ const handleLanguageChange = (lng) => {
                       <div className="flex-shrink-0">
                         <img
                           className={`w-20 bg-auto ${cat.image === '' ? '' : 'rounded'}`}
-                          src={cat.image === '' ? IconNemu : 'https://www.nemuapp.it/api/download/' + cat.image}
+                          src={cat.image === '' ? IconNemu : `${apiEndpoint}/download/` + cat.image}
                           alt="menu"
                         />
                       </div>

@@ -8,6 +8,8 @@ function CategoryMenu({state, translate, selectedLang}) {
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [clickedMenu, setClickedMenu] = useState(null); // State to store the clicked menu
   const [toggleMenu, setToggleMenu] = useState(false);
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+
 
   useEffect(() => {
     if (state) {
@@ -46,7 +48,7 @@ function CategoryMenu({state, translate, selectedLang}) {
                     <div className="ml-4 mt-4 flex-shrink-0">
                       <img
                         className={`h-12 w-12 bg-auto ${menu.image === '' ? '' : 'rounded'}`}
-                        src={menu.image === '' ? IconNemu : 'https://www.nemuapp.it/api/download/' + menu.image}
+                        src={menu.image === '' ? IconNemu : `${apiEndpoint}/download/` + menu.image}
                         alt="menu"
                       />
                     </div>

@@ -11,12 +11,13 @@ function MenuType() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
 
   useEffect(() => {
     const fetchMenuData = async () => {
       try {
-        const response = await fetch(`https://www.nemuapp.it/api/owners/${menuType}/menus`);
+        const response = await fetch(`${apiEndpoint}/owners/${menuType}/menus`);
         if (!response.ok) {
           throw new Error('Failed to fetch menu data');
         }
@@ -69,7 +70,7 @@ function MenuType() {
                   <div className="flex-shrink-0">
                     <img
                       className={`h-12 w-12 bg-cover ${menu.menu.image === '' ? '' : 'rounded'}`}
-                      src={menu.menu.image === '' ? IconNemu : 'https://www.nemuapp.it/api/download/'+menu.menu.image}
+                      src={menu.menu.image === '' ? IconNemu : `${apiEndpoint}/download/`+menu.menu.image}
                       alt="menu"
                     />
                   </div>
