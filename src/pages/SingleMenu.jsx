@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import GoBack from '../components/GoBack';
 import CategoryMenu from '../components/CategoryMenu';
 import Languages from '../components/Languages';
+import Filter from '../components/Filter';
 
 function SingleMenu() {
   const { menuType, menuId } = useParams();
@@ -25,8 +26,7 @@ function SingleMenu() {
   const [menuCategoriesLeng, setMenuCategoriesLeng] = useState([]);
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
 
-
-
+  const [filters, setFilters] = useState({ isFish: true, isMeat: true, isVegetarian: true });
 
   // Access the passed data from the state object
   const { data } = location.state || { data: { menu: { menuCategory: [] } } };
@@ -50,7 +50,6 @@ function SingleMenu() {
   };
 
   useEffect(() => {
-
     if (!executed && data.menu.menuCategory.length === 0) {
       fetchMenuData();
       setExecuted(true);
@@ -100,18 +99,42 @@ const handleLanguageChange = (lng) => {
         setMenuCategoriesLeng(singleMenuLang)
         const translatedMenuName = menuLang.translatedMenu.translatedName;
         setMenuName(translatedMenuName);
-        console.log(singleMenuLang);
-        console.log(menuCategories);
-
       }
     } else {
-      // If translation is not available, use default Italian values
-      setMenuName(apiData.menu.name);
-      setMenuCategories(apiData.menu.menuCategory);
+      setSelectedLanguages(lng);
+      if(lng !== 'it'){
+        const menuLang = data.menu.translations.find((menu) => menu.language === lng);
+        const singleMenuLang = menuLang.translatedMenu.translatedMenuCategory;
+        setMenuCategoriesLeng(singleMenuLang)
+        const translatedMenuName = menuLang.translatedMenu.translatedName;
+        setMenuName(translatedMenuName);
+      }
     }
   }; 
-    
 
+  const handleFiltersChange = (newFilters) => {
+    setFilters(newFilters);
+
+    if(!newFilters.isMeat){
+      menuCategories.forEach(menuCategory => {
+        menuCategory.menuItems = menuCategory.menuItems.filter(item => {
+          return !item.isMeat;
+        });
+      });
+    }else{
+      // Only set state if the condition is false, to avoid infinite loop
+      if (!executed) {
+        setMenuCategories(data.menu.menuCategory);
+        return;
+      }
+      fetchMenuData();
+      setExecuted(true);
+    }
+    
+  
+  };
+  
+  
   return (
     <>
         {/* <GoBack/> */}
@@ -119,7 +142,10 @@ const handleLanguageChange = (lng) => {
       <div className="flex flex-col items-center justify-center my-10">
         <h1 className="text-2xl font-bold" style={{ color: "#46b979" }}>{menuName}</h1>
       </div>
+
       <div className="flex flex-col items-center w-full">
+      <Filter menus={menuCategories} handleFiltersChange={handleFiltersChange}/>
+
       {menuCategories.map((cat) => {
           const translate = menuCategoriesLeng.find(oneCat => oneCat.id === cat._id);
         return (
