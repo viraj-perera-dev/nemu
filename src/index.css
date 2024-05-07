@@ -482,3 +482,26 @@ figcaption p{
   .bg-nemu{
     background-color: #46b979;
   }
+
+  /* switch advanced filter */
+  .switch-option {
+    position: relative;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: background-color 0.5s ease; /* Adjust transition duration for background-color */
+  }
+  
+  .selected::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 9999px;
+    background-color: #272727; /* Define your selected background color here */
+    z-index: -1;
+    transition: transform 0.5s ease; /* Adjust transition duration for transform */
+  }
+  
+  

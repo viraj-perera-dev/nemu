@@ -34,7 +34,6 @@ function CategoryMenu({state, translate, selectedLang}) {
         {menus.map((menu) => {
 
           const foodTranslated = selectedLang !== 'it' ? translate.find(oneCat => oneCat.id === menu._id) : undefined;
-          console.log(foodTranslated);
 
           return (
             <React.Fragment key={menu._id}>

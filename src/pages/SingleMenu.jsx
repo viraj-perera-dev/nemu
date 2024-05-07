@@ -25,6 +25,7 @@ function SingleMenu() {
   const [selectedLanguages, setSelectedLanguages] = useState('it');
   const [menuCategoriesLeng, setMenuCategoriesLeng] = useState([]);
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
+  const [originalMenu, setOriginalMenu] = useState([]);
 
   const [filters, setFilters] = useState({ isFish: true, isMeat: true, isVegetarian: true });
 
@@ -43,6 +44,7 @@ function SingleMenu() {
       setApiData(menu);
       const singleMenu = menu.menu.menuCategory;
       setMenuCategories(singleMenu);
+      setOriginalMenu(singleMenu);
       setMenuName(menu.menu.name);
     } catch (error) {
       console.log(error.message);
@@ -50,7 +52,7 @@ function SingleMenu() {
   };
 
   useEffect(() => {
-    if (!executed && data.menu.menuCategory.length === 0) {
+    if (originalMenu.length === 0) {
       fetchMenuData();
       setExecuted(true);
       return;
@@ -59,6 +61,7 @@ function SingleMenu() {
     // Only set state if the condition is false, to avoid infinite loop
     if (!executed) {
       setMenuCategories(data.menu.menuCategory);
+      setOriginalMenu(data.menu.menuCategory);
       setMenuName(data.menu.name);
     }
 
@@ -89,8 +92,8 @@ function SingleMenu() {
     }
   };
   
-// Define handleLanguageChange function
-const handleLanguageChange = (lng) => {  
+  // Define handleLanguageChange function
+  const handleLanguageChange = (lng) => {  
   if(Object.keys(apiData).length > 0){
     setSelectedLanguages(lng);
       if(lng !== 'it'){
@@ -112,26 +115,28 @@ const handleLanguageChange = (lng) => {
     }
   }; 
 
-  const handleFiltersChange = (newFilters) => {
-    setFilters(newFilters);
-
-    if(!newFilters.isMeat){
-      menuCategories.forEach(menuCategory => {
-        menuCategory.menuItems = menuCategory.menuItems.filter(item => {
-          return !item.isMeat;
-        });
+  const handelFilter = (newFilters) => {
+    const filteredCategories = originalMenu.map(category => {
+      const filteredItems = category.menuItems.filter(item => {
+        return (
+          (newFilters.isMeat || !item.isMeat) &&
+          (newFilters.isFish || !item.isFish) &&
+          (newFilters.isVegetarian || !item.isVegetarian)
+        );
       });
-    }else{
-      // Only set state if the condition is false, to avoid infinite loop
-      if (!executed) {
-        setMenuCategories(data.menu.menuCategory);
-        return;
-      }
-      fetchMenuData();
-      setExecuted(true);
-    }
-    
+      return { ...category, menuItems: filteredItems };
+    });
+    setMenuCategories(filteredCategories);
+  };
   
+
+  const handleFiltersChange = (newFilters) => {
+    console.log('originalmanu',originalMenu);
+    console.log('menuCategories',menuCategories);
+
+    setMenuCategories(originalMenu);
+    setFilters(newFilters);
+    handelFilter(newFilters);
   };
   
   

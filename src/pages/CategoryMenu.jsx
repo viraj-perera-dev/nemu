@@ -15,7 +15,6 @@ function CategoryMenu() {
 
   useEffect(() => {
     if (data) {
-      console.log(data.menuItems);
       setMenus(data.menuItems);
     }
   }, [data]);
