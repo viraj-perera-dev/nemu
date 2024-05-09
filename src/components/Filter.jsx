@@ -63,6 +63,11 @@ const handlemodalClose = () => {
   setOpen(false);
 }
 
+
+const handleFilteredMenu = (updatedMenu) => {
+  handleFiltersChange(updatedMenu);
+};
+
   return (
     <div className='mb-5'>
       <button  className={`border-b px-4 py-2 sm:px-6 w-full md:w-96 cursor-pointer rounded`} style={{ 'border': '1px solid #46b979' }}>
@@ -181,7 +186,7 @@ const handlemodalClose = () => {
         </div>
       </button>
       {open && 
-        <AdvancedFilter total={total} close={handlemodalClose}/>    
+        <AdvancedFilter total={total} close={handlemodalClose} menu={menus} includeFilterMenu={handleFilteredMenu} />    
       }
     </div>
   );

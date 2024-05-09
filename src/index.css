@@ -487,7 +487,9 @@ figcaption p{
   .switch-option {
     position: relative;
     cursor: pointer;
-    padding: 0.5rem;
+    padding-inline: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     transition: background-color 0.5s ease; /* Adjust transition duration for background-color */
   }
   
