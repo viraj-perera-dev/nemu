@@ -18,7 +18,6 @@ function SingleMenu() {
   const [selectedId, setSelectedId] = useState('');
   const [menuName, setMenuName] = useState('');
   const [executed, setExecuted] = useState(false);
-
   const defaultLanguage = 'it';
   const [menuLang, setMenuLang] = useState('');
   const [apiData, setApiData] = useState({});
@@ -26,6 +25,8 @@ function SingleMenu() {
   const [menuCategoriesLeng, setMenuCategoriesLeng] = useState([]);
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
   const [originalMenu, setOriginalMenu] = useState([]);
+  const [total, setTotal] = useState(0);
+
 
   const [filters, setFilters] = useState({ isFish: true, isMeat: true, isVegetarian: true });
 
@@ -52,7 +53,7 @@ function SingleMenu() {
   };
 
   useEffect(() => {
-    if (originalMenu.length === 0) {
+    if (menuCategories.length === 0) {
       fetchMenuData();
       setExecuted(true);
       return;
@@ -131,13 +132,25 @@ function SingleMenu() {
   
 
   const handleFiltersChange = (newFilters) => {
-    console.log('originalmanu',originalMenu);
-    console.log('menuCategories',menuCategories);
+    if(newFilters === 0){
+      setMenuCategories(originalMenu);
+      return;
+    }
+    if (Array.isArray(newFilters)) {
+      setMenuCategories(newFilters);
+    } else {
+      setFilters(newFilters);
+      handelFilter(newFilters);
+    }
 
-    setMenuCategories(originalMenu);
-    setFilters(newFilters);
-    handelFilter(newFilters);
   };
+
+  useEffect(()=>{
+  const totalMenuItems = menuCategories.reduce((total, menu) => {
+    return total + menu.menuItems.length;
+  }, 0);
+  setTotal(totalMenuItems);
+}, [menuCategories]); 
   
   
   return (
@@ -149,7 +162,7 @@ function SingleMenu() {
       </div>
 
       <div className="flex flex-col items-center w-full">
-      <Filter menus={menuCategories} handleFiltersChange={handleFiltersChange}/>
+      <Filter menus={originalMenu} handleFiltersChange={handleFiltersChange} total={total}/>
 
       {menuCategories.map((cat) => {
           const translate = menuCategoriesLeng.find(oneCat => oneCat.id === cat._id);

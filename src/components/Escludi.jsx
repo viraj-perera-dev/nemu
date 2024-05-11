@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-function Escludi({ menu }) {
+function Escludi({ menu, onUpdateMenu }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredIngredients, setFilteredIngredients] = useState([]);
     const [removedIngredients, setRemovedIngredients] = useState([]);
+    const [filteredMenu, setFilteredMenu] = useState(menu);
 
     useEffect(() => {
+        // Filter the menu items based on whether any of their ingredients are present in removedIngredients
+        const updatedMenu = menu.map(category => ({
+            ...category,
+            menuItems: category.menuItems.filter(menuItem => {
+                const menuItemIngredients = menuItem.translatedIngredients.map(ingredient => ingredient.translatedName);
+                return !menuItemIngredients.some(ingredient => removedIngredients.includes(ingredient));
+            })
+        }));
+
+        setFilteredMenu(updatedMenu);
+        
+        // Update the filteredIngredients state based on searchTerm
         const filteredItems = menu.flatMap(category =>
             category.menuItems.flatMap(menuItem =>
                 menuItem.translatedIngredients.map((ingredient, index) => ingredient.translatedName)
@@ -13,18 +26,17 @@ function Escludi({ menu }) {
         ).filter(ingredient => ingredient.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
 
         setFilteredIngredients(filteredItems);
-    }, [menu, searchTerm]);
+        onUpdateMenu(updatedMenu);
+    }, [menu, removedIngredients, searchTerm]);
 
     const handleAddIngredient = (ingredient) => {
         setRemovedIngredients(prevIngredients => [...prevIngredients, ingredient]);
         setFilteredIngredients(prevIngredients => prevIngredients.filter(item => item !== ingredient));
-        
     };
 
     const handleRemoveIngredient = (ingredient) => {
         setFilteredIngredients(prevIngredients => [...prevIngredients, ingredient]);
         setRemovedIngredients(prevIngredients => prevIngredients.filter(item => item !== ingredient));
-        
     };
 
     return (

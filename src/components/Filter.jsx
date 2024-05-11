@@ -2,24 +2,16 @@ import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDrumstickBite, faFilter, faFish, faSeedling } from '@fortawesome/free-solid-svg-icons';
+import { faDrumstickBite, faFilter, faFish, faSeedling, faX, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 import { Switch } from '@headlessui/react'
 import AdvancedFilter from './AdvancedFilter';
 
-function Filter({menus, handleFiltersChange}) {
-const [total, setTotal] = useState(0);
+function Filter({menus, handleFiltersChange, total}) {
 const [carneEnabled, setCarneEnabled] = useState(true);
 const [pesceEnabled, setPesceEnabled] = useState(true);
 const [vegetarianoEnabled, setVegetarianoEnabled] = useState(true);
 const [open, setOpen] = useState(false);
-
-
-useEffect(()=>{
-  const totalMenuItems = menus.reduce((total, menu) => {
-    return total + menu.menuItems.length;
-  }, 0);
-  setTotal(totalMenuItems);
-}, [menus]); 
+const [removeFilters, setRemoveFilters] = useState(false);
 
 
 const handleToggle = (filter) => {
@@ -45,10 +37,6 @@ const handleToggle = (filter) => {
       break;
   }
   handleFiltersChange(filtersState);
-  const totalMenuItems = menus.reduce((total, menu) => {
-    return total + menu.menuItems.length;
-  }, 0);
-  setTotal(totalMenuItems);
 };
 
 function classNames(...classes) {
@@ -65,8 +53,14 @@ const handlemodalClose = () => {
 
 
 const handleFilteredMenu = (updatedMenu) => {
+  setRemoveFilters(true);
   handleFiltersChange(updatedMenu);
 };
+
+const handleRemoveFilters = () => {
+  setRemoveFilters(false);
+  handleFiltersChange(0);
+}
 
   return (
     <div className='mb-5'>
@@ -184,6 +178,11 @@ const handleFilteredMenu = (updatedMenu) => {
               </div>
           </div>
         </div>
+        {removeFilters && 
+          <div className="-ml-4 flex flex-wrap items-center justify-start sm:flex-nowrap">
+            <button className='text-rose-700 mt-1 ms-5' onClick={handleRemoveFilters}><FontAwesomeIcon icon={faXmarkCircle} className='me-2' /> rimuovi filtri</button>
+          </div>
+        }
       </button>
       {open && 
         <AdvancedFilter total={total} close={handlemodalClose} menu={menus} includeFilterMenu={handleFilteredMenu} />    

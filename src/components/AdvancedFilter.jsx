@@ -79,7 +79,7 @@ function AdvancedFilter({ total, close, menu, includeFilterMenu }) {
 
                 {selectedOption === 'Escludi' && (
                   <div className="mt-5">
-                    <Escludi menu={menu}/>
+                    <Escludi menu={menu} onUpdateMenu={handleUpdateMenu}/>
                   </div>
                 )}
 
