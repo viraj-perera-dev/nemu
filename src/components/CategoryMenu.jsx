@@ -78,6 +78,8 @@ function CategoryMenu({state, translate, selectedLang}) {
                         </p>
                       <p className="text-sm font-medium mb-2 text-gray-900"><b>{selectedLang === 'it' ? 'Allergeni: ' : 'Allergens: '}</b> {selectedLang === 'it' ? selectedMeal.allergens.join(', ') : foodTranslated.translatedAllergens.join(', ')}</p>
                       <p className="text-sm font-medium mb-2 text-gray-900"><b>{selectedLang === 'it' ? 'Ingredienti: ' : 'Ingredients: '}</b> {selectedLang === 'it' ? selectedMeal.translatedIngredients.map(obj => obj.translatedName).join(', ') : foodTranslated.ingredients.map(obj => obj.name).join(', ')}</p>
+                      {/* spa lang got ingredient in a diffrent location here the example */}
+                      {/* <p className="text-sm font-medium mb-2 text-gray-900"><b>{selectedLang === 'it' ? 'Ingredienti: ' : 'Ingredients: '}</b> {selectedLang === 'it' ? selectedMeal.translatedIngredients.map(obj => obj.translatedName).join(', ') : foodTranslated.translatedIngredients.map(obj => obj.translatedName).join(', ')}</p> */}
                     </div>
                   </div>
                 )}

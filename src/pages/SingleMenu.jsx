@@ -95,6 +95,7 @@ function SingleMenu() {
   
   // Define handleLanguageChange function
   const handleLanguageChange = (lng) => {  
+    console.log(lng, ' ', apiData)
   if(Object.keys(apiData).length > 0){
     setSelectedLanguages(lng);
       if(lng !== 'it'){

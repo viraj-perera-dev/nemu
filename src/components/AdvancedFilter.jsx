@@ -85,7 +85,7 @@ function AdvancedFilter({ total, close, menu, includeFilterMenu }) {
 
                 {selectedOption === 'Allergeni' && (
                   <div className="mt-5">
-                    <AllergeniComponent menu={menu}/>
+                    <AllergeniComponent menu={menu} onUpdateMenu={handleUpdateMenu}/>
                   </div>
                 )}
 

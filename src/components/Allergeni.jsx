@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Switch } from '@headlessui/react';
 
-function Allergeni({ menu }) {
+function Allergeni({ menu, onUpdateMenu }) {
     const [allergeni, setAllergeni] = useState([]);
 
     useEffect(() => {
@@ -17,15 +17,31 @@ function Allergeni({ menu }) {
 
         // Create an array of objects with name and value properties for each allergen
         const allergenObjects = uniqueAllergens.map(allergen => ({ name: allergen, value: true }));
-
+        console.log(allergenObjects)
         // Set the state with the extracted allergens
         setAllergeni(allergenObjects);
+        onUpdateMenu(menu);
     }, [menu]);
 
     const handleToggle = (index) => {
         const updatedOptions = [...allergeni];
         updatedOptions[index] = { ...updatedOptions[index], value: !updatedOptions[index].value };
         setAllergeni(updatedOptions);
+
+        // Filter the menu items based on the selected allergens
+        const updatedMenu = menu.map(category => ({
+            ...category,
+            menuItems: category.menuItems.filter(menuItem => {
+                const hasFalseAllergen = menuItem.allergens.some(allergen => {
+                    const selectedAllergen = updatedOptions.find(option => option.name === allergen);
+                    return selectedAllergen && !selectedAllergen.value;
+                });
+                return !hasFalseAllergen;
+            })
+        }));
+
+        // Update the menu state with the filtered menu
+        onUpdateMenu(updatedMenu);
     };
 
     function classNames(...classes) {
