@@ -1,33 +1,50 @@
 import React, { useEffect, useState } from "react";
+import { useMenuContext } from '../MenuContext';
 
-function Escludi({ menu, onUpdateMenu }) {
-    const [searchTerm, setSearchTerm] = useState('');
+function Escludi() {
+    const { menuCategories, setMenuCategories, originalMenu, escludiMenu, setEscludiMenu, removeFilters, setRemoveFilters } = useMenuContext();
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('escludiSearchTerm') || '');
     const [filteredIngredients, setFilteredIngredients] = useState([]);
-    const [removedIngredients, setRemovedIngredients] = useState([]);
-    const [filteredMenu, setFilteredMenu] = useState(menu);
+    const [removedIngredients, setRemovedIngredients] = useState(JSON.parse(localStorage.getItem('escludiRemovedIngredients')) || []);
 
     useEffect(() => {
-        // Filter the menu items based on whether any of their ingredients are present in removedIngredients
-        const updatedMenu = menu.map(category => ({
+        // Save state to local storage whenever it changes
+        localStorage.setItem('escludiRemovedIngredients', JSON.stringify(removedIngredients));
+        localStorage.setItem('escludiSearchTerm', searchTerm);
+    }, [removedIngredients, searchTerm]);
+
+    useEffect(()=>{
+        if(filteredIngredients.length > 0){
+            setRemoveFilters(true);
+            return;
+        }
+    })
+
+    useEffect(() => {
+        // Set escludiMenu based on originalMenu
+        setEscludiMenu(menuCategories);
+
+        // Update the filteredIngredients state based on searchTerm
+        const filteredItems = originalMenu.flatMap(category =>
+            category.menuItems.flatMap(menuItem =>
+                menuItem.translatedIngredients.map(ingredient => ingredient.translatedName)
+            )
+        ).filter(ingredient => ingredient.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
+
+        setFilteredIngredients(filteredItems);
+    }, [originalMenu, searchTerm, setEscludiMenu]);
+
+    useEffect(() => {
+        // Update menuCategories when removedIngredients change
+        const updatedMenu = escludiMenu.map(category => ({
             ...category,
             menuItems: category.menuItems.filter(menuItem => {
                 const menuItemIngredients = menuItem.translatedIngredients.map(ingredient => ingredient.translatedName);
                 return !menuItemIngredients.some(ingredient => removedIngredients.includes(ingredient));
             })
         }));
-
-        setFilteredMenu(updatedMenu);
-        
-        // Update the filteredIngredients state based on searchTerm
-        const filteredItems = menu.flatMap(category =>
-            category.menuItems.flatMap(menuItem =>
-                menuItem.translatedIngredients.map((ingredient, index) => ingredient.translatedName)
-            )
-        ).filter(ingredient => ingredient.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
-
-        setFilteredIngredients(filteredItems);
-        onUpdateMenu(updatedMenu);
-    }, [menu, removedIngredients, searchTerm]);
+        setMenuCategories(updatedMenu);
+    }, [removedIngredients, escludiMenu, setMenuCategories]);
 
     const handleAddIngredient = (ingredient) => {
         setRemovedIngredients(prevIngredients => [...prevIngredients, ingredient]);
@@ -35,7 +52,6 @@ function Escludi({ menu, onUpdateMenu }) {
     };
 
     const handleRemoveIngredient = (ingredient) => {
-        setFilteredIngredients(prevIngredients => [...prevIngredients, ingredient]);
         setRemovedIngredients(prevIngredients => prevIngredients.filter(item => item !== ingredient));
     };
 

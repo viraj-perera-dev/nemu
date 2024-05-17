@@ -5,14 +5,53 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDrumstickBite, faFilter, faFish, faSeedling, faX, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 import { Switch } from '@headlessui/react'
 import AdvancedFilter from './AdvancedFilter';
+import { useMenuContext } from '../MenuContext';
 
-function Filter({menus, handleFiltersChange, total}) {
+function Filter({menus}) {
+const { menuCategories, setMenuCategories } = useMenuContext();
+const { originalMenu, setOriginalMenu } = useMenuContext();
+const { allerginesMenu, setAllerginesMenu } = useMenuContext();
+const { removeFilters, setRemoveFilters } = useMenuContext();
 const [carneEnabled, setCarneEnabled] = useState(true);
 const [pesceEnabled, setPesceEnabled] = useState(true);
 const [vegetarianoEnabled, setVegetarianoEnabled] = useState(true);
 const [open, setOpen] = useState(false);
-const [removeFilters, setRemoveFilters] = useState(false);
+const [filters, setFilters] = useState({ isFish: true, isMeat: true, isVegetarian: true });
+const [total, setTotal] = useState(0);
 
+useEffect(()=>{
+  const totalMenuItems = menuCategories.reduce((total, menu) => {
+    return total + menu.menuItems.length;
+  }, 0);
+  setTotal(totalMenuItems);
+}, [menuCategories]); 
+
+
+const handelFilter = (newFilters) => {
+  const filteredCategories = originalMenu.map(category => {
+    const filteredItems = category.menuItems.filter(item => {
+      return (
+        (newFilters.isMeat || !item.isMeat) &&
+        (newFilters.isFish || !item.isFish) &&
+        (newFilters.isVegetarian || !item.isVegetarian)
+      );
+    });
+    return { ...category, menuItems: filteredItems };
+  });
+  setMenuCategories(filteredCategories);
+};
+
+
+const handleFiltersChange = (newFilters) => {
+  if (Array.isArray(newFilters)) {
+    setMenuCategories(newFilters);
+    console.log(newFilters);
+  } else {
+    setFilters(newFilters);
+    handelFilter(newFilters);
+  }
+
+};
 
 const handleToggle = (filter) => {
   let filtersState = {
@@ -24,18 +63,28 @@ const handleToggle = (filter) => {
     case 'carne':
       setCarneEnabled(!carneEnabled);
       filtersState.isMeat = !carneEnabled;
+      if(carneEnabled){
+        setRemoveFilters(true);
+      }
       break;
     case 'pesce':
       setPesceEnabled(!pesceEnabled);
       filtersState.isFish = !pesceEnabled;
+      if(pesceEnabled){
+        setRemoveFilters(true);
+      }
       break;
     case 'vegetariano':
       setVegetarianoEnabled(!vegetarianoEnabled);
       filtersState.isVegetarian = !vegetarianoEnabled;
+      if(vegetarianoEnabled){
+        setRemoveFilters(true);
+      }
       break;
     default:
       break;
   }
+  const hasFalseValue = Object.values(filtersState).some(value => value === false);
   handleFiltersChange(filtersState);
 };
 
@@ -51,15 +100,14 @@ const handlemodalClose = () => {
   setOpen(false);
 }
 
-
-const handleFilteredMenu = (updatedMenu) => {
-  setRemoveFilters(true);
-  handleFiltersChange(updatedMenu);
-};
-
 const handleRemoveFilters = () => {
+  localStorage.clear(); 
   setRemoveFilters(false);
-  handleFiltersChange(0);
+  setMenuCategories(originalMenu);
+  setAllerginesMenu([]);
+  setCarneEnabled(true);
+  setPesceEnabled(true);
+  setVegetarianoEnabled(true);
 }
 
   return (
@@ -185,7 +233,7 @@ const handleRemoveFilters = () => {
         }
       </button>
       {open && 
-        <AdvancedFilter total={total} close={handlemodalClose} menu={menus} includeFilterMenu={handleFilteredMenu} />    
+        <AdvancedFilter total={total} close={handlemodalClose}/>    
       }
     </div>
   );

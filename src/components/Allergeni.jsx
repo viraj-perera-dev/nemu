@@ -1,47 +1,95 @@
 import React, { useEffect, useState } from "react";
 import { Switch } from '@headlessui/react';
+import { useMenuContext } from '../MenuContext';
 
-function Allergeni({ menu, onUpdateMenu }) {
+function Allergeni() {
+    const { menuCategories, setMenuCategories } = useMenuContext();
+    const { allerginesMenu, setAllerginesMenu } = useMenuContext();
+    const { removeFilters, setRemoveFilters } = useMenuContext();
+    const { originalMenu } = useMenuContext();
     const [allergeni, setAllergeni] = useState([]);
 
     useEffect(() => {
-        // Extract all allergens from the menu object
-        const extractedAllergens = menu.flatMap(category =>
-            category.menuItems.flatMap(menuItem =>
-                menuItem.allergens
-            )
-        );
+        const savedAllergeni = JSON.parse(localStorage.getItem('allergeni')) || [];
+        if (savedAllergeni.length > 0) {
+            setAllergeni(savedAllergeni);
+            filterMenu(savedAllergeni, menuCategories);
+            const allTrue = savedAllergeni.every(option => option.value);
+            if (!allTrue) {
+                setRemoveFilters(true);
+            }else{
+                setRemoveFilters(false);
+            }
+        } else {
+            const initialAllergeni = extractAllergeniFromMenu(originalMenu);
+            setAllergeni(initialAllergeni);
+            filterMenu(initialAllergeni, menuCategories);
+            const allTrue = initialAllergeni.every(option => option.value);
+            if (!allTrue) {
+                setRemoveFilters(true);
+            }else{
+                setRemoveFilters(false);
+            }
+        }
+    }, [originalMenu]);
 
-        // Remove duplicate allergens
-        const uniqueAllergens = Array.from(new Set(extractedAllergens));
-
-        // Create an array of objects with name and value properties for each allergen
-        const allergenObjects = uniqueAllergens.map(allergen => ({ name: allergen, value: true }));
-        console.log(allergenObjects)
-        // Set the state with the extracted allergens
-        setAllergeni(allergenObjects);
-        onUpdateMenu(menu);
-    }, [menu]);
+    useEffect(() => {
+        if (allergeni.length > 0) {
+            localStorage.setItem('allergeni', JSON.stringify(allergeni));
+        }
+    }, [allergeni]);
 
     const handleToggle = (index) => {
+        if(allerginesMenu.length > 0){
+            const updatedOptions = [...allergeni];
+            updatedOptions[index] = { ...updatedOptions[index], value: !updatedOptions[index].value };
+            setAllergeni(updatedOptions);
+            filterMenu(updatedOptions, allerginesMenu);
+            const allTrue = updatedOptions.every(option => option.value);
+            if (!allTrue) {
+                setRemoveFilters(true);
+            }else{
+                setRemoveFilters(false);
+            }
+            return;
+        }
         const updatedOptions = [...allergeni];
         updatedOptions[index] = { ...updatedOptions[index], value: !updatedOptions[index].value };
         setAllergeni(updatedOptions);
+        filterMenu(updatedOptions, menuCategories);
+        setAllerginesMenu(menuCategories);
+        const allTrue = updatedOptions.every(option => option.value);
+        if (!allTrue) {
+            setRemoveFilters(true);
+        }else{
+            setRemoveFilters(false);
+        }
 
-        // Filter the menu items based on the selected allergens
-        const updatedMenu = menu.map(category => ({
+    };
+
+    const filterMenu = (allergenOptions, menuToFilter) => {
+        const updatedMenu = menuToFilter.map(category => ({
             ...category,
             menuItems: category.menuItems.filter(menuItem => {
                 const hasFalseAllergen = menuItem.allergens.some(allergen => {
-                    const selectedAllergen = updatedOptions.find(option => option.name === allergen);
+                    const selectedAllergen = allergenOptions.find(option => option.name === allergen);
                     return selectedAllergen && !selectedAllergen.value;
                 });
                 return !hasFalseAllergen;
             })
         }));
+        setMenuCategories(updatedMenu);
 
-        // Update the menu state with the filtered menu
-        onUpdateMenu(updatedMenu);
+    };
+
+    const extractAllergeniFromMenu = (menuCategories) => {
+        const extractedAllergens = menuCategories.flatMap(category =>
+            category.menuItems.flatMap(menuItem =>
+                menuItem.allergens
+            )
+        );
+        const uniqueAllergens = Array.from(new Set(extractedAllergens));
+        return uniqueAllergens.map(allergen => ({ name: allergen, value: true }));
     };
 
     function classNames(...classes) {

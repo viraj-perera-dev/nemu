@@ -7,12 +7,15 @@ import GoBack from '../components/GoBack';
 import CategoryMenu from '../components/CategoryMenu';
 import Languages from '../components/Languages';
 import Filter from '../components/Filter';
+import { a } from 'react-spring';
+import { useMenuContext } from '../MenuContext';
 
 function SingleMenu() {
+  const { menuCategories, setMenuCategories } = useMenuContext();
+  const { originalMenu, setOriginalMenu } = useMenuContext();
   const { menuType, menuId } = useParams();
   const location = useLocation();
   const navigate = useNavigate(); // Initialize useNavigate
-  const [menuCategories, setMenuCategories] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState([]);
   const [selectedId, setSelectedId] = useState('');
@@ -24,11 +27,10 @@ function SingleMenu() {
   const [selectedLanguages, setSelectedLanguages] = useState('it');
   const [menuCategoriesLeng, setMenuCategoriesLeng] = useState([]);
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT;
-  const [originalMenu, setOriginalMenu] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [storedFilters, setStoredFilters] = useState([]);
 
 
-  const [filters, setFilters] = useState({ isFish: true, isMeat: true, isVegetarian: true });
+  // const [filters, setFilters] = useState({ isFish: true, isMeat: true, isVegetarian: true });
 
   // Access the passed data from the state object
   const { data } = location.state || { data: { menu: { menuCategory: [] } } };
@@ -46,6 +48,7 @@ function SingleMenu() {
       const singleMenu = menu.menu.menuCategory;
       setMenuCategories(singleMenu);
       setOriginalMenu(singleMenu);
+      setStoredFilters(singleMenu);
       setMenuName(menu.menu.name);
     } catch (error) {
       console.log(error.message);
@@ -63,6 +66,7 @@ function SingleMenu() {
     if (!executed) {
       setMenuCategories(data.menu.menuCategory);
       setOriginalMenu(data.menu.menuCategory);
+      setStoredFilters(data.menu.menuCategory);
       setMenuName(data.menu.name);
     }
 
@@ -117,41 +121,35 @@ function SingleMenu() {
     }
   }; 
 
-  const handelFilter = (newFilters) => {
-    const filteredCategories = originalMenu.map(category => {
-      const filteredItems = category.menuItems.filter(item => {
-        return (
-          (newFilters.isMeat || !item.isMeat) &&
-          (newFilters.isFish || !item.isFish) &&
-          (newFilters.isVegetarian || !item.isVegetarian)
-        );
-      });
-      return { ...category, menuItems: filteredItems };
-    });
-    setMenuCategories(filteredCategories);
-  };
+  // const handelFilter = (newFilters) => {
+  //   const filteredCategories = originalMenu.map(category => {
+  //     const filteredItems = category.menuItems.filter(item => {
+  //       return (
+  //         (newFilters.isMeat || !item.isMeat) &&
+  //         (newFilters.isFish || !item.isFish) &&
+  //         (newFilters.isVegetarian || !item.isVegetarian)
+  //       );
+  //     });
+  //     return { ...category, menuItems: filteredItems };
+  //   });
+  //   setMenuCategories(filteredCategories);
+  //   setStoredFilters(filteredCategories);
+  // };
   
 
-  const handleFiltersChange = (newFilters) => {
-    if(newFilters === 0){
-      setMenuCategories(originalMenu);
-      return;
-    }
-    if (Array.isArray(newFilters)) {
-      setMenuCategories(newFilters);
-    } else {
-      setFilters(newFilters);
-      handelFilter(newFilters);
-    }
+  // const handleFiltersChange = (newFilters) => {
+  //   if(newFilters === 0){
+  //     setMenuCategories(originalMenu);
+  //     return;
+  //   }
+  //   if (Array.isArray(newFilters)) {
+  //     setMenuCategories(newFilters);
+  //   } else {
+  //     setFilters(newFilters);
+  //     handelFilter(newFilters);
+  //   }
 
-  };
-
-  useEffect(()=>{
-  const totalMenuItems = menuCategories.reduce((total, menu) => {
-    return total + menu.menuItems.length;
-  }, 0);
-  setTotal(totalMenuItems);
-}, [menuCategories]); 
+  // };
   
   
   return (
@@ -163,7 +161,7 @@ function SingleMenu() {
       </div>
 
       <div className="flex flex-col items-center w-full">
-      <Filter menus={originalMenu} handleFiltersChange={handleFiltersChange} total={total}/>
+      <Filter/>
 
       {menuCategories.map((cat) => {
           const translate = menuCategoriesLeng.find(oneCat => oneCat.id === cat._id);

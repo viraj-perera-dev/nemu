@@ -10,7 +10,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-
+import { MenuProvider } from './MenuContext';
 AOS.init();
 
 const isDesktop = () => {
@@ -55,7 +55,9 @@ if (rootElement.hasChildNodes()) {
       ) : (
         <></>
       )}
-      <App />
+      <MenuProvider>
+        <App />
+      </MenuProvider>
     </React.StrictMode>,
     rootElement
   );
@@ -70,7 +72,9 @@ if (rootElement.hasChildNodes()) {
       ) : (
         <></>
       )}
-      <App />
+      <MenuProvider>
+        <App />
+      </MenuProvider>
     </React.StrictMode>
   );
 }

@@ -3,20 +3,23 @@ import { Dialog, Switch, Transition } from '@headlessui/react';
 import Includi from './Includi';
 import Escludi from './Escludi';
 import AllergeniComponent from './Allergeni';
+import { useMenuContext } from '../MenuContext';
 
-
-function AdvancedFilter({ total, close, menu, includeFilterMenu }) {
+function AdvancedFilter({ total, close }) {
+  const { menuCategories, setMenuCategories } = useMenuContext();
+  const { originalMenu, setOriginalMenu } = useMenuContext();
   const [open, setOpen] = useState(true);
-  const [selectedOption, setSelectedOption] = useState('Includi');
+  const [selectedOption, setSelectedOption] = useState('Allergeni');
   const [options, setOptions] = useState([
-    { name: 'Includi', value: true },
-    { name: 'Escludi', value: true },
     { name: 'Allergeni', value: true },
+    { name: 'Escludi', value: true },
+    { name: 'Includi', value: true },
   ]);
 
-    const handleUpdateMenu = (updatedMenu) => {
-        includeFilterMenu(updatedMenu);
-    };
+    const handleSelectOption = (name) => {
+      setSelectedOption(name);
+    };                                                                                    
+
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -64,7 +67,7 @@ function AdvancedFilter({ total, close, menu, includeFilterMenu }) {
                       <button
                         key={option.name}
                         className={`switch-option z-10 text-neutral-50 font-semibold ${selectedOption === option.name && 'selected'}`}
-                        onClick={() => setSelectedOption(option.name)}
+                        onClick={() => handleSelectOption(option.name)}
                       >
                         {option.name}
                       </button>
@@ -73,19 +76,19 @@ function AdvancedFilter({ total, close, menu, includeFilterMenu }) {
                 </div>
                 {selectedOption === 'Includi' && (   
                   <div className="mt-5">
-                    <Includi menu={menu} onUpdateMenu={handleUpdateMenu}/>
+                    <Includi initialMenu={menuCategories}/>
                   </div>
                 )}    
 
                 {selectedOption === 'Escludi' && (
                   <div className="mt-5">
-                    <Escludi menu={menu} onUpdateMenu={handleUpdateMenu}/>
+                    <Escludi/>
                   </div>
                 )}
 
                 {selectedOption === 'Allergeni' && (
                   <div className="mt-5">
-                    <AllergeniComponent menu={menu} onUpdateMenu={handleUpdateMenu}/>
+                    <AllergeniComponent/>
                   </div>
                 )}
 

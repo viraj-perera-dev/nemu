@@ -1,33 +1,43 @@
 import React, { useEffect, useState } from "react";
+import { useMenuContext } from '../MenuContext';
 
-function Includi({ menu, onUpdateMenu }) {
-    const [searchTerm, setSearchTerm] = useState('');
+function Includi() {
+    const { menuCategories, setMenuCategories, originalMenu, removeFilters, setRemoveFilters, includiMenu, setIncludiMenu } = useMenuContext();
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
     const [filteredIngredients, setFilteredIngredients] = useState([]);
-    const [removedIngredients, setRemovedIngredients] = useState([]);
-    const [filteredMenu, setFilteredMenu] = useState(menu);
+    const [removedIngredients, setRemovedIngredients] = useState(JSON.parse(localStorage.getItem('removedIngredients')) || []);
 
     useEffect(() => {
-        // Filter the menu items based on whether any of their ingredients are present in removedIngredients
-        const updatedMenu = menu.map(category => ({
-            ...category,
-            menuItems: category.menuItems.filter(menuItem => {
-                const menuItemIngredients = menuItem.translatedIngredients.map(ingredient => ingredient.translatedName);
-                return menuItemIngredients.some(ingredient => removedIngredients.includes(ingredient));
-            })
-        }));
+        // Save state to local storage whenever it changes
+        localStorage.setItem('removedIngredients', JSON.stringify(removedIngredients));
+        localStorage.setItem('filteredIngredients', JSON.stringify(filteredIngredients));
+        localStorage.setItem('searchTerm', searchTerm);
+    }, [removedIngredients, filteredIngredients, searchTerm]);
 
-        setFilteredMenu(updatedMenu);
-        
-        // Update the filteredIngredients state based on searchTerm
-        const filteredItems = menu.flatMap(category =>
-            category.menuItems.flatMap(menuItem =>
-                menuItem.translatedIngredients.map((ingredient, index) => ingredient.translatedName)
-            )
-        ).filter(ingredient => ingredient.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
+    useEffect(() => {
+            setIncludiMenu(originalMenu);
+            const updatedMenu = originalMenu.map(category => ({
+                ...category,
+                menuItems: category.menuItems.filter(menuItem => {
+                    const menuItemIngredients = menuItem.translatedIngredients.map(ingredient => ingredient.translatedName);
+                    return menuItemIngredients.some(ingredient => removedIngredients.includes(ingredient));
+                })
+            }));
 
-        setFilteredIngredients(filteredItems);
-        onUpdateMenu(updatedMenu);
-    }, [menu, removedIngredients, searchTerm]);
+            // Update the filteredIngredients state based on searchTerm
+            const filteredItems = originalMenu.flatMap(category =>
+                category.menuItems.flatMap(menuItem =>
+                    menuItem.translatedIngredients.map((ingredient) => ingredient.translatedName)
+                )
+            ).filter(ingredient => ingredient.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
+            setFilteredIngredients(filteredItems);
+            setRemoveFilters(true);
+            if(menuCategories.length > 0){
+                setMenuCategories(updatedMenu);
+                return;
+            }
+    }, [ removedIngredients, searchTerm]);
+    
 
     const handleAddIngredient = (ingredient) => {
         setRemovedIngredients(prevIngredients => [...prevIngredients, ingredient]);
