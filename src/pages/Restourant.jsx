@@ -1,34 +1,29 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { GiPositionMarker } from "react-icons/gi";
-import { useNavigate } from 'react-router-dom';
 import Logo from "../assets/logo/logo-positivo-png/Nemù_Logo_01_S+C.png";
+import Filter from "../components/Filter";
+import IconNemu from '../assets/logo/iconeSvg/Nemù_Icon_01_S+C.svg';
+
 
 import {
-  GoogleMap,
   LoadScript,
-  Marker,
   StandaloneSearchBox,
 } from '@react-google-maps/api';
+import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 
 const libraries = ['places'];
-const mapContainerStyle = {
-  height: '80vh',
-  width: '100%',
-};
+
 const center = {
   lat: 45.4383659,
   lng: 10.9917136,
 };
 
-function HomePage() {
-  const [position, setPosition] = useState(center);
+function Restourant() {
   const [searchBox, setSearchBox] = useState(null);
   const [tempPosition, setTempPosition] = useState(null);
   const [restaurants, setRestaurants] = useState([]);
   const [sliderValue, setSliderValue] = useState(500); 
   const inputRef = useRef(null);
-  const navigate = useNavigate();
 
   const onLoad = useCallback((ref) => {
     setSearchBox(ref);
@@ -46,7 +41,6 @@ function HomePage() {
   };
 
   const confirmPosition = () => {
-    setPosition(tempPosition);
     fetchRestaurants(tempPosition.lat, tempPosition.lng);
   };
 
@@ -72,6 +66,7 @@ function HomePage() {
   };
 
   const fetchRestaurants = (lat, lng) => {
+    const radius = 500; // radius in meters
     const page = 1;
     const limit = 10; // adjust the limit as needed
     const url = `https://www.nemuapp.it/api/owners/nearby?lng=${lng}&lat=${lat}&radius=${sliderValue}&page=${page}&limit=${limit}`;
@@ -91,6 +86,7 @@ function HomePage() {
   const handleSliderChange = (event) => {
     setSliderValue(event.target.value);
   };
+console.log(restaurants)
 
   return (
     <>
@@ -144,31 +140,36 @@ function HomePage() {
         />
         <span className="ml-4 text-white">{sliderValue} KM</span>
       </div>
+      <Filter/>
+      {restaurants.map((restaurant) => (
+          <button key={restaurant._id} className='w-72 md:w-96 mb-10'>
+            <div className={`border-b px-4 py-3 sm:px-6 rounded`} style={{ 'border':'1px solid #46b979'}}>
+              <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
+                <div className="ml-4 mt-4">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <img
+                        className={`h-12 w-12 bg-cover`}
+                        src={IconNemu}
+                        alt="menu"
+                      />
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="text-base font-bold leading-6" style={{color:"#46b979"}}>{restaurant.name}</h3>
+                      <p className="text-sm text-gray-500">{restaurant.name}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="ml-4 mt-4 flex flex-shrink-0">
+                  <ArrowRightCircleIcon className="-ml-0.5 mr-1.5 h-5 w-5" style={{color:"#46b979"}} aria-hidden="true" />
+                </div>
+              </div>
+            </div>
+          </button>
+        ))}
 
-      <div className="h-screen md:mx-96">
-        <LoadScript googleMapsApiKey="AIzaSyDAMd9UupXz3WQwYHYzROElcbvIlFMBIlo" libraries={libraries}>
-          <GoogleMap mapContainerStyle={mapContainerStyle} center={position} zoom={10}>
-            {position && <Marker position={position} />}
-            {tempPosition && <Marker position={tempPosition} />}
-            {restaurants.map((restaurant, index) => (
-              <Marker
-                key={index}
-                position={{
-                  lat: restaurant.address.coordinates[1], // Access lat from address.coordinates
-                  lng: restaurant.address.coordinates[0], // Access lng from address.coordinates
-                }}
-                icon={{
-                  url: `https://w7.pngwing.com/pngs/69/947/png-transparent-icon-position-map-location-icon-icons-place-geolocation-restaurant-cutlery-fork-thumbnail.png`,
-                  scaledSize: new window.google.maps.Size(32, 32),
-                }}
-                onClick={() => navigate(`/menu/${restaurant._id}/`)}
-                />
-            ))}
-          </GoogleMap>
-        </LoadScript>
-      </div>
     </>
   );
 }
 
-export default HomePage;
+export default Restourant;
