@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { ArrowRightCircleIcon } from '@heroicons/react/20/solid';
 import IconNemu from '../assets/logo/iconeSvg/Nemù_Icon_04_S+B.svg';
 import { useNavigate } from 'react-router-dom';
+import SingleMenuComponent from './SingleMenuComponent';
 
 
 function MenuTypeComponent({id, onMenuCategoryLength}) {
@@ -57,24 +58,12 @@ function MenuTypeComponent({id, onMenuCategoryLength}) {
     return <div>Loading...</div>;
   }
 
-  // Render error message if an error occurred
-//   if (error) {
-//     return <div>Error: {error}</div>;
-//   }
-
-  const handleMenuClick = (menuId) => {
-    const selectedMenu = menus.find(menu => menu.menuId === menuId);
-
-    if (selectedMenu) {
-      navigate(`/menu/${menuType}/${menuId}`, { state: { data: selectedMenu } });
-    }  
-  };
-
 
   return (
     <>
       {menus.map((menu) => (
-        <button key={menu.menuId} onClick={() => handleMenuClick(menu.menuId)} className='w-full md:w-96'>
+        <>
+        {/* <button key={menu.menuId} className='w-full md:w-96'>
           <div className={`border-b px-4 py-3 sm:px-6 rounded`} style={{backgroundColor:menu.menu.color+'e7', backgroundColor:'#46b979'}}>
             <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
               <div className="ml-4 mt-4">
@@ -96,7 +85,11 @@ function MenuTypeComponent({id, onMenuCategoryLength}) {
               </div>
             </div>
           </div>
-        </button>
+        </button> */}
+        <div className={``}>
+            <SingleMenuComponent data={menu} />
+        </div>
+        </>
       ))}
       </>
   );

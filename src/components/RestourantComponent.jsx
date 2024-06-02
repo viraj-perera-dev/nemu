@@ -28,9 +28,9 @@ function RestourantComponent({ allRestaurants }) {
       if (!fetchedMenus[restaurantId]) {
         try {
           const response = await axios.get(`${apiEndpoint}/owners/${restaurantId}/menus`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch menu data');
-          }
+        //   if (!response.ok) {
+        //     throw new Error('Failed to fetch menu data');
+        //   }
           const data = response.data;
           setFetchedMenus((prevFetchedMenus) => ({
             ...prevFetchedMenus,
