@@ -15,7 +15,7 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
-          <Route exact path="/menu" element={<Restourant />} />
+          <Route exact path="/restourants" element={<Restourant />} />
           <Route exact path="/menu/:menuType" element={<MenuType />} />
           <Route exact path="/menu/:menuType/:menuId" element={<SingleMenu />} />
         </Routes>
